@@ -1,15 +1,27 @@
-require('./insights').setup()
 const Hapi = require('@hapi/hapi')
+const config = require('./config')
+const { generateForceCoords } = require('./lib/geo/spatial-index')
 
-const server = Hapi.server({
-  port: process.env.PORT
-})
+async function createServer () {
+  const server = Hapi.server({
+    port: config.port,
+    routes: {
+      validate: {
+        options: {
+          abortEarly: false
+        }
+      }
+    },
+    router: {
+      stripTrailingSlash: true
+    }
+  })
 
-const routes = [].concat(
-  require('./routes/healthy'),
-  require('./routes/healthz')
-)
+  await server.register(require('./plugins/router'))
 
-server.route(routes)
+  await generateForceCoords()
 
-module.exports = server
+  return server
+}
+
+module.exports = createServer

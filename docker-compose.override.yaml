@@ -13,3 +13,22 @@ services:
     volumes:
       - ./app:/home/node/app
       - ./package.json:/home/node/package.json
+    environment:
+      APPINSIGHTS_CLOUDROLE: aphw-ddi-police-force-local
+      APPINSIGHTS_CONNECTIONSTRING: ${APPINSIGHTS_CONNECTIONSTRING}
+      AZURE_STORAGE_USE_CONNECTION_STRING: "true"
+      AZURE_STORAGE_CONNECTION_STRING: "${AZURE_STORAGE_CONNECTION_STRING}:-UseDevelopmentStorage=true"
+      AZURE_STORAGE_ACCOUNT_NAME: ${AZURE_STORAGE_STORAGE_ACCOUNT_NAME:-test}
+      AZURE_STORAGE_FORCE_KML_CONTAINER: "police-force-kml"
+    depends_on:
+      - aphw-ddi-police-force-azurite
+  
+  aphw-ddi-police-force-azurite:
+    command: "azurite-blob --skipApiVersionCheck --loose --blobHost 0.0.0.0 -l data"
+    volumes:
+      - azurite_data:/opt/azurite/data
+    ports:
+      - "10000:10000"
+
+volumes:
+  azurite_data:
