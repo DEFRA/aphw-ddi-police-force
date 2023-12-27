@@ -1,6 +1,6 @@
 apiVersion: v2
-description: description-of-project-goes-here
-name: ffc-template-node
+description: Microservice to lookup police force based coordinates and postcode
+name: aphw-ddi-police-force
 # this version is automatically updated in the build pipeline
 version: 1.0.0
 dependencies:

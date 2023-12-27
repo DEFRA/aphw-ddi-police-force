@@ -2,11 +2,11 @@
 # that test output is saved to the host
 
 services:
-  ffc-template-node:
+  aphw-ddi-police-force:
     build:
       target: development
-    image: ffc-template-node-development
-    container_name: ffc-template-node-test
+    image: aphw-ddi-police-force-development
+    container_name: aphw-ddi-police-force-test
     command: npm run test
     volumes:
       - ./app:/home/node/app

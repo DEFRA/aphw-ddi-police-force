@@ -2,11 +2,11 @@
 # to provide dependencies and expose ports for local testing
 
 services:
-  ffc-template-node:
+  aphw-ddi-police-force:
     build:
       target: development
-    image: ffc-template-node-development
-    container_name: ffc-template-node-development
+    image: aphw-ddi-police-force-development
+    container_name: aphw-ddi-police-force-development
     ports:
       - "3000:3000"
       - "9229:9229"
