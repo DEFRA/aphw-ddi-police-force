@@ -14,6 +14,8 @@ module.exports = {
     '<rootDir>/test-output/',
     '<rootDir>/test/',
     '<rootDir>/rename.js',
+    '<rootDir>/jest.config.js',
+    '<rootDir>/jest.setup.js',
     '<rootDir>/jest.config.js'
   ],
   modulePathIgnorePatterns: [
@@ -32,5 +34,6 @@ module.exports = {
   ],
   testEnvironment: 'node',
   testPathIgnorePatterns: [],
+  setupFilesAfterEnv: ['./jest.setup.js'],
   verbose: true
 }
