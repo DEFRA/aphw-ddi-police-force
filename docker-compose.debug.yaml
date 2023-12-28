@@ -1,3 +1,3 @@
 services:
-  ffc-template-node:
+  aphw-ddi-police-force:
     command: npm run start:debug

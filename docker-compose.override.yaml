@@ -2,14 +2,33 @@
 # to provide dependencies and expose ports for local testing
 
 services:
-  ffc-template-node:
+  aphw-ddi-police-force:
     build:
       target: development
-    image: ffc-template-node-development
-    container_name: ffc-template-node-development
+    image: aphw-ddi-police-force-development
+    container_name: aphw-ddi-police-force-development
     ports:
       - "3000:3000"
       - "9229:9229"
     volumes:
       - ./app:/home/node/app
       - ./package.json:/home/node/package.json
+    environment:
+      APPINSIGHTS_CLOUDROLE: aphw-ddi-police-force-local
+      APPINSIGHTS_CONNECTIONSTRING: ${APPINSIGHTS_CONNECTIONSTRING}
+      AZURE_STORAGE_USE_CONNECTION_STRING: "true"
+      AZURE_STORAGE_CONNECTION_STRING: "${AZURE_STORAGE_CONNECTION_STRING}:-UseDevelopmentStorage=true"
+      AZURE_STORAGE_ACCOUNT_NAME: ${AZURE_STORAGE_STORAGE_ACCOUNT_NAME:-test}
+      AZURE_STORAGE_FORCE_KML_CONTAINER: "police-force-kml"
+    depends_on:
+      - aphw-ddi-police-force-azurite
+  
+  aphw-ddi-police-force-azurite:
+    command: "azurite-blob --skipApiVersionCheck --loose --blobHost 0.0.0.0 -l data"
+    volumes:
+      - azurite_data:/opt/azurite/data
+    ports:
+      - "10000:10000"
+
+volumes:
+  azurite_data:
