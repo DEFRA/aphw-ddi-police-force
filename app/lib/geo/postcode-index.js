@@ -1,6 +1,5 @@
 const { getClient } = require('../storage')
 const storageConfig = require('../../config/storage')
-const DOMParser = require('@xmldom/xmldom').DOMParser
 
 const postcodeIndex = new Map()
 
@@ -31,7 +30,7 @@ const generatePostcodeCoords = async () => {
       if (postcode && lat && lng) {
         const strippedPostcode = postcode.replaceAll('"', '')
         // console.log(`row postcode=${strippedPostcode} lat=${lat} lng=${lng}`)
-        postcodeIndex.set(strippedPostcode, { lat, lng })
+        postcodeIndex.set(strippedPostcode, { lat: parseFloat(lat), lng: parseFloat(lng) })
         i++
       }
     })
