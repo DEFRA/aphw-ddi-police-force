@@ -5,7 +5,8 @@ const schema = Joi.object({
   connectionString: Joi.string().optional(),
   account: Joi.string().required(),
   forceKmlContainer: Joi.string(),
-  postcodeCoordsContainer: Joi.string()
+  postcodeCoordsContainer: Joi.string(),
+  postcodeCoordsFile: Joi.string().default('postcodes.json')
 })
 
 const config = {
@@ -13,7 +14,8 @@ const config = {
   connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING,
   account: process.env.AZURE_STORAGE_ACCOUNT_NAME,
   forceKmlContainer: process.env.AZURE_STORAGE_FORCE_KML_CONTAINER,
-  postcodeCoordsContainer: process.env.AZURE_STORAGE_POSTCODE_COORDS_CONTAINER
+  postcodeCoordsContainer: process.env.AZURE_STORAGE_POSTCODE_COORDS_CONTAINER,
+  postcodeCoordsFile: process.env.AZURE_STORAGE_POSTCODE_COORDS_FILE
 }
 
 const result = schema.validate(config, {

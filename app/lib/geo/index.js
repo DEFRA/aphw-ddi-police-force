@@ -1,5 +1,5 @@
 const { spatialIndex } = require('./spatial-index')
-const { postcodeIndex } = require('./postcode-index')
+const postcode = require('./postcode')
 
 const findForceByCoords = (lat, lon) => {
   try {
@@ -11,17 +11,7 @@ const findForceByCoords = (lat, lon) => {
   }
 }
 
-const findCoordsByPostcodeLocal = (postcode) => {
-  try {
-    return postcodeIndex.get(postcode)
-  } catch (err) {
-    console.error(err)
-
-    throw err
-  }
-}
-
 module.exports = {
   findForceByCoords,
-  findCoordsByPostcodeLocal
+  postcode
 }

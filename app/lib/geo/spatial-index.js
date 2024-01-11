@@ -2,7 +2,6 @@ const { getClient } = require('../storage')
 const storageConfig = require('../../config/storage')
 const DOMParser = require('@xmldom/xmldom').DOMParser
 const { kml } = require('@mapbox/togeojson')
-const { memoryUsage } = require('node:process')
 
 const BoostSpatialIndex = require('boost-geospatial-index')
 
@@ -36,10 +35,6 @@ const generateForceCoords = async () => {
 
     console.log(`Adding ${force} to index`)
 
-    console.log('mem', memoryUsage())
-    const muNow = memoryUsage()['heapUsed'] / 1024 / 1024 / 1024
-    console.log(`memoryUsage ${Math.round(muNow * 100) / 100} GB`)
-  
     if (geo.features[0].geometry.geometries === undefined) {
       const sets = parseSinglePolygon(geo)
 

@@ -1,6 +1,6 @@
 const config = require('../../config')
 const wreck = require('@hapi/wreck')
-const postcodeIndex = require('./postcode-index')
+const { postcodeIndex } = require('./postcode-index')
 
 const baseUrl = config.osPlacesApi.baseUrl
 const postcodeEndpoint = 'postcode'
@@ -26,6 +26,17 @@ const getPostcodeLongLatApi = async (postcode) => {
   }
 }
 
+const findCoordsByPostcodeLocal = (postcode) => {
+  const coords = postcodeIndex.get(postcode)
+
+  if (!coords) {
+    throw new Error(`Postcode (${postcode}) not found in index.`)
+  }
+
+  return coords
+}
+
 module.exports = {
-  getPostcodeLongLatApi
+  getPostcodeLongLatApi,
+  findCoordsByPostcodeLocal
 }

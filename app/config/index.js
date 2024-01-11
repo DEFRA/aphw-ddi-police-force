@@ -6,7 +6,7 @@ const schema = Joi.object({
   osPlacesApi: {
     baseUrl: Joi.string().default('https://api.os.uk/search/places/v1'),
     token: Joi.string().required()
-  },
+  }
 })
 
 const config = {

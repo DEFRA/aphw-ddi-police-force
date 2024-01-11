@@ -4,41 +4,35 @@ const storageConfig = require('../../config/storage')
 const postcodeIndex = new Map()
 
 const generatePostcodeCoords = async () => {
-  console.log('Generating postcode index', storageConfig.postcodeCoordsContainer)
+  console.log('Generating postcode index')
 
-  const serviceClient = getClient()
+  let count = 0
 
-  const containerClient = serviceClient.getContainerClient(storageConfig.postcodeCoordsContainer)
+  const client = getClient()
 
+  const containerClient = client.getContainerClient(storageConfig.postcodeCoordsContainer)
   await containerClient.createIfNotExists()
 
-  let i = 0
-  for await (const blob of containerClient.listBlobsFlat()) {
-    console.log(`Adding ${blob.name} to index`)
+  const blobClient = containerClient.getBlockBlobClient(storageConfig.postcodeCoordsFile)
+  const json = await blobClient.downloadToBuffer()
 
-    const client = containerClient.getBlockBlobClient(blob.name)
+  const { postcodes } = JSON.parse(json.toString('utf-8'))
 
-    const file = (await client.downloadToBuffer()).toString('utf-8')
+  for (const entry of postcodes) {
+    const postcode = entry.postcode
+    const lat = entry.lat
+    const lon = entry.lon
 
-    const fileRows = file.split('\n')
+    if (postcode && lat && lon) {
+      const strippedPostcode = postcode.replaceAll('"', '')
 
-    fileRows.forEach(r => {
-      const rowElems = r.split(',')
-      const postcode = rowElems[0]
-      const lat = rowElems[42]
-      const lng = rowElems[43]
-      if (postcode && lat && lng) {
-        const strippedPostcode = postcode.replaceAll('"', '')
-        // console.log(`row postcode=${strippedPostcode} lat=${lat} lng=${lng}`)
-        postcodeIndex.set(strippedPostcode, { lat: parseFloat(lat), lng: parseFloat(lng) })
-        i++
-      }
-    })
-    console.log(`Done adding ${blob.name} to index`)
+      postcodeIndex.set(strippedPostcode, { lat: parseFloat(lat), lon: parseFloat(lon) })
 
+      count++
+    }
   }
 
-  console.log('Finished building postcode index ' + i + ' entries')
+  console.log(`Finished building postcode index ${count} entries`)
 }
 
 module.exports = {
