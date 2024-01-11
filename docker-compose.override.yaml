@@ -25,11 +25,11 @@ services:
       - aphw-ddi-police-force-azurite
   
   aphw-ddi-police-force-azurite:
-    command: "azurite-blob --skipApiVersionCheck --loose --blobHost 0.0.0.0 -l data"
+    command: "azurite-blob --skipApiVersionCheck --loose --blobHost 0.0.0.0 --blobPort 10005 -l data"
     volumes:
       - azurite_data:/opt/azurite/data
     ports:
-      - "10000:10000"
+      - "10005:10005"
 
 volumes:
   azurite_data:
