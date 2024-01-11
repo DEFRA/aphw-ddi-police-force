@@ -2,7 +2,6 @@ const Hapi = require('@hapi/hapi')
 const config = require('./config')
 const { generateForceCoords } = require('./lib/geo/spatial-index')
 const { generatePostcodeCoords } = require('./lib/geo/postcode-index')
-// const { memoryUsage } = require('node:process')
 
 async function createServer () {
   const server = Hapi.server({
@@ -21,8 +20,8 @@ async function createServer () {
 
   await server.register(require('./plugins/router'))
 
-  await generatePostcodeCoords()
   await generateForceCoords()
+  await generatePostcodeCoords()
 
   return server
 }
