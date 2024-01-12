@@ -14,7 +14,10 @@ services:
       AZURE_STORAGE_CONNECTION_STRING: "UseDevelopmentStorage=true"
       AZURE_STORAGE_STORAGE_ACCOUNT_NAME: ${AZURE_STORAGE_STORAGE_ACCOUNT_NAME:-test}
       AZURE_STORAGE_FORCE_KML_CONTAINER: "police-force-kml"
+      AZURE_STORAGE_POSTCODE_COORDS_CONTAINER: "postcode-areas"
+      OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-test}
+      OS_PLACES_API_BASE_URL: ${OS_PLACES_API_BASE_URL:-test}
 
   aphw-ddi-police-force-azurite:
     image: mcr.microsoft.com/azure-storage/azurite:3.23.0
-    command: "azurite-blob --skipApiVersionCheck --loose --blobHost 0.0.0.0"
+    command: "azurite-blob --skipApiVersionCheck --loose --blobHost 0.0.0.0 --blobPort 10005"

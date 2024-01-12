@@ -4,12 +4,27 @@ Microservice to lookup police force covering specified coordinates.
 
 ## Prerequisites
 
+- Conversion of downloaded ONS Postcodes CSV into a smaller JSON file - see later
+
 - Docker
 - Docker Compose
 
 Optional:
 - Kubernetes
 - Helm
+
+## Before running the application
+In order for the application to load the necessary files from Blob storage, you will need to do the following:
+1. Download Police boundaries from https://data.police.uk/data/boundaries/force_kmls.zip
+2. Unzip the file and upload all the KML files to blob storage (to a container called 'police-force-kml')
+3. Download Postcodes from https://geoportal.statistics.gov.uk/datasets/3700342d3d184b0d92eae99a78d9c7a3/about (or a later version if it exists)
+4. Unzip the file and copy ONSPD_NOV_2023_UK.csv to the root of this codebase
+5. Run
+   python3 extract-columns-from-csv.py
+[If you are using a newer CSV file, you will need to amend the Python script accordingly]
+A files called postcodes.json should be created in the root of the project
+6. Upload postcodes.json to Blob in a container called 'postcode-areas'
+
 
 ## Running the application
 
