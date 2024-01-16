@@ -1,6 +1,6 @@
 {
   "name": "aphw-ddi-police-force",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Microservice to lookup police force covering specified coordinates",
   "homepage": "https://github.com/DEFRA/aphw-ddi-police-force",
   "main": "app/index.js",
