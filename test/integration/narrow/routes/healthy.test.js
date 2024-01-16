@@ -1,4 +1,7 @@
 describe('Healthy test', () => {
+  jest.mock('../../../../app/lib/geo/spatial-index')
+  jest.mock('../../../../app/lib/geo/postcode-index')
+
   const createServer = require('../../../../app/server')
   let server
 
