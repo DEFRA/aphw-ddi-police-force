@@ -26,6 +26,13 @@ container:
   limitMemory: 100Mi
   limitCpu: 100m
   port: 3000
+  osPlacesApiKey: dummy
+  osPlacesBaseUrl: dummy
+  azureStorageConnectionString: dummy
+  azureStorageUseConnectionString: false
+  azureStorageAccountName: dummy
+  policeForceKmlContainer: aphw-ddi-policeforces
+  postcodeAreaContainer: aphw-ddi-postcodeareas
 
 livenessProbe:
   path: /healthz
