@@ -4,4 +4,8 @@ data:
   NODE_ENV: {{ quote .Values.environment }}
   PORT: {{ quote .Values.container.port }}
   APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
+  OS_PLACES_API_BASE_URL: {{ quote .Values.container.osPlacesBaseUrl }}
+  AZURE_STORAGE_USE_CONNECTION_STRING: {{ quote .Values.container.azureStorageUseConnectionString }}
+  AZURE_STORAGE_FORCE_KML_CONTAINER: {{ quote .Values.container.policeForceKmlContainer }}
+  AZURE_STORAGE_POSTCODE_COORDS_CONTAINER: {{ quote .Values.container.postcodeAreaContainer }}
 {{- end -}}

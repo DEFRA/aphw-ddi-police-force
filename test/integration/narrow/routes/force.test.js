@@ -2,6 +2,9 @@ describe('Force endpoint test', () => {
   const createServer = require('../../../../app/server')
   let server
 
+  jest.mock('../../../../app/lib/geo/spatial-index')
+  jest.mock('../../../../app/lib/geo/postcode-index')
+
   jest.mock('../../../../app/lib/geo')
   const { findForceByCoords } = require('../../../../app/lib/geo')
 
@@ -16,11 +19,11 @@ describe('Force endpoint test', () => {
       url: '/force'
     }
 
-    findForceByCoords.mockReturnValue(['test-force'])
+    findForceByCoords.mockReturnValue(['cumbria'])
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(200)
-    expect(response.result).toMatchObject({ force: 'test-force' })
+    expect(response.result).toMatchObject({ id: 'cumbria', name: 'Cumbria Constabulary' })
   })
 
   test('GET /force route with lat/lon returns 204 if empty array', async () => {
