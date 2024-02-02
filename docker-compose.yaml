@@ -17,6 +17,14 @@ services:
       AZURE_STORAGE_POSTCODE_COORDS_CONTAINER: "postcode-areas"
       OS_PLACES_API_KEY: ${OS_PLACES_API_KEY:-test}
       OS_PLACES_API_BASE_URL: ${OS_PLACES_API_BASE_URL:-test}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1500M
+        reservations:
+          cpus: '0.25'
+          memory: 750M
 
   aphw-ddi-police-force-azurite:
     image: mcr.microsoft.com/azure-storage/azurite:3.23.0

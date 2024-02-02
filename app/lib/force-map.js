@@ -7,7 +7,7 @@ const map = {
   cleveland: 'Cleveland Police',
   cumbria: 'Cumbria Constabulary',
   derbyshire: 'Derbyshire Constabulary',
-  'devon-and-cornwall': 'Devon & Cornwall Police',
+  'devon-and-cornwall': 'Devon and Cornwall Police',
   dorset: 'Dorset Police',
   durham: 'Durham Constabulary',
   'dyfed-powys': 'Dyfed-Powys Police',
