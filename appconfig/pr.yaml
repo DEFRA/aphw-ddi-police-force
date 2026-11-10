@@ -1,0 +1,7 @@
+---
+environment: production
+environmentCode: snd
+container:
+  osPlacesBaseUrl: https://api.os.uk/search/places/v1
+  azureStorageForceKmlContainer: aphw-ddi-policeforces
+  azureStoragePostcodeCoordsContainer: aphw-ddi-postcodeareas

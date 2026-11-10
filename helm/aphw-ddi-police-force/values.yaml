@@ -12,11 +12,10 @@ appInsights:
   connectionString:
 
 containerConfigMap:
-  name: aphw-ddi-police-force-config-map
+  name: aphw-ddi-police-force
 
 containerSecret:
-  name: aphw-ddi-police-force-container-secret
-  type: Opaque
+  name: aphw-ddi-police-force
 
 deployment: {}
 
@@ -26,6 +25,11 @@ container:
   limitMemory: 100Mi
   limitCpu: 100m
   port: 3000
+  azureStorageUseConnectionString: false
+  azureStorageAccountName: dummy
+  azureStorageForceKmlContainer: aphw-ddi-policeforces
+  azureStoragePostcodeCoordsContainer: aphw-ddi-postcodeareas
+  osPlacesBaseUrl: https://api.os.uk/search/places/v1
 
 livenessProbe:
   path: /healthz
@@ -42,3 +46,26 @@ readinessProbe:
   periodSeconds: 10
   failureThreshold: 3
   timeoutSeconds: 5
+
+workloadIdentity: true
+
+azureIdentity:
+  clientID: not-a-real-clientID
+  resourceID: not-a-real-resourceID
+
+secretProviderClass:
+  azure:
+    keyvaultName: SNDFFCINFKV2001
+    objects:
+      - objectName: snd2-aphw-appinsights-connectionString
+        objectType: secret
+      - objectName: snd2-aphw-ddi-os-places-key
+        objectType: secret
+  secretObjects:
+    - secretName: aphw-ddi-police-force
+      type: Opaque
+      data:
+        - objectName: snd2-aphw-appinsights-connectionString
+          key: APPINSIGHTS_CONNECTIONSTRING
+        - objectName: snd2-aphw-ddi-os-places-key
+          key: OS_PLACES_API_KEY
