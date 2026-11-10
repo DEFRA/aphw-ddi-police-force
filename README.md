@@ -13,6 +13,73 @@ Optional:
 - Kubernetes
 - Helm
 
+### Installing Node.js dependencies locally
+
+Use the Node.js version in `.nvmrc`, then run `npm ci` (or `npm install`
+when updating dependencies).
+
+`boost-geospatial-index` is a native C++ addon. Version 1.5.0 uses Node-API
+and includes prebuilt binaries for Linux x64/arm64 with glibc and macOS
+x64/arm64. Windows and Alpine Linux (musl) build it from source.
+Boost headers are bundled with the package; a separate Boost installation
+is not required.
+
+For Windows source builds, install:
+
+- Python 3 (Python 3.12 requires node-gyp 10 or newer).
+- Visual Studio 2022 Build Tools with the **Desktop development with C++**
+  workload, including the MSVC build tools and Windows SDK.
+- For Node.js 26, **C++ Clang Compiler for Windows** and **MSBuild support
+  for LLVM (clang-cl) toolset** in the same Visual Studio installation.
+  Their component IDs are `Microsoft.VisualStudio.Component.VC.Llvm.Clang`
+  and `Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset`.
+
+An `MSB8020` error mentioning `ClangCL` means the Clang toolset is missing;
+installing Python or Boost alone will not fix it. After installing the
+components, enable C++ exceptions for the Windows build and install:
+
+```powershell
+$env:CL = "$env:CL /EHsc".Trim()
+npm ci
+```
+
+Without `/EHsc`, Clang reports `cannot use 'try' with exceptions disabled`
+in the bundled Boost headers. To retain the option for future Windows
+sessions, add `/EHsc` to your user `CL` environment variable and restart
+VS Code/your terminal. This also affects other C++ builds for that user.
+The flag is Windows-specific and must not be set in Linux Docker images.
+
+### Native dependencies in Docker images
+
+The Defra parent images are Alpine-based, so the addon needs `python3`,
+`make` and `g++` at build time. These are provided by
+`defradigital/node-development`. The runtime needs `libstdc++`, supplied by
+the Node.js base image; it does not need Python, a compiler or external
+Boost libraries.
+
+Both dependency-install stages set `npm_config_build_from_source=true` for
+`npm ci`, ensuring that Alpine gets a locally compiled musl addon rather
+than relying on prebuilt-binary detection. The parent image uses npm 12,
+which blocks dependency install scripts by default. The `allowScripts`
+entry in `package.json` explicitly permits `boost-geospatial-index@1.5.0`
+to compile; update this approval when updating the addon version.
+Other dependency script approvals are not changed.
+
+Each stage checks that the
+compiled `build/Release/BoostSpatialIndex.node` binary loads, including the
+development image used by `scripts/test`. A missing or unloadable binary
+therefore fails the image build instead of failing later inside Jest.
+
+Production dependencies are installed with `npm ci --omit=dev` in a
+`production-dependencies` stage based on the development image, then copied
+into the production image. This keeps native compilation out of the
+toolchain-free production stage and excludes development dependencies from
+the final image. The final image also checks that the addon loads.
+
+Keep the build and runtime stages on matching Node.js, Alpine/libc and CPU
+architecture versions. Do not copy Windows host `node_modules` into Linux
+images.
+
 ## Before running the application
 In order for the application to load the necessary files from Blob storage, you will need to do the following:
 1. Download Police boundaries from https://data.police.uk/data/boundaries/force_kmls.zip
@@ -59,6 +126,11 @@ docker-compose up
 ```
 
 ## Test structure
+
+Narrow route integration tests use the real Hapi server and router but mock
+the spatial and postcode startup loaders, so they do not require seeded Blob
+storage. Local geospatial integration tests use Azurite and real native
+geometry with their own KML fixtures.
 
 The tests have been structured into subfolders of `./test` as per the
 [Microservice test approach and repository structure](https://eaflood.atlassian.net/wiki/spaces/FPS/pages/1845396477/Microservice+test+approach+and+repository+structure)
