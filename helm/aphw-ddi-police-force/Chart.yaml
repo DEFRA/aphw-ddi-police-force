@@ -5,5 +5,5 @@ name: aphw-ddi-police-force
 version: 1.0.0
 dependencies:
 - name: ffc-helm-library
-  version: 4.0.0
+  version: 5.2.*
   repository: https://raw.githubusercontent.com/defra/ffc-helm-repository/master/

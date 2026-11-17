@@ -21,4 +21,4 @@ services:
       AZURE_STORAGE_ACCOUNT_NAME: "devstoreaccount1"
 
   aphw-ddi-police-force-azurite:
-    image: mcr.microsoft.com/azure-storage/azurite:3.23.0
+    image: mcr.microsoft.com/azure-storage/azurite:3.37.0

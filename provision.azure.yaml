@@ -1,0 +1,11 @@
+resources:
+  identity: aphw-ddi-police-force
+  storage_accounts:
+    - name: aphw
+      containers:
+        - name: aphw-ddi-postcodeareas
+          roles:
+            - name: blobContributor
+        - name: aphw-ddi-policeforces
+          roles:
+            - name: blobContributor

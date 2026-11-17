@@ -1,3 +1,10 @@
+jest.mock('../../../../app/lib/geo/spatial-index', () => ({
+  generateForceCoords: jest.fn().mockResolvedValue(undefined)
+}))
+jest.mock('../../../../app/lib/geo/postcode-index', () => ({
+  generatePostcodeCoords: jest.fn().mockResolvedValue(undefined)
+}))
+
 describe('Healthy test', () => {
   const createServer = require('../../../../app/server')
   let server
@@ -18,6 +25,6 @@ describe('Healthy test', () => {
   })
 
   afterEach(async () => {
-    await server.stop()
+    await server?.stop()
   })
 })
